@@ -5,6 +5,7 @@
     "target": "ESNext",
     "module": "Preserve",
     "moduleDetection": "force",
+    "esModuleInterop": true, 
     "jsx": "react-jsx",
     "allowJs": true,
 
@@ -24,6 +25,9 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  }
+    "noPropertyAccessFromIndexSignature": false,
+    "experimentalDecorators": true
+  },
+ 
+  
 }
