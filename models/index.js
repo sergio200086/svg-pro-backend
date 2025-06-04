@@ -1,17 +1,20 @@
-"use strict";
-
 import { readdirSync } from "fs";
-import { basename as _basename, join } from "path";
+import path, { dirname } from "path";
 import Sequelize, { DataTypes } from "sequelize";
-import { env as _env } from "process";
-const basename = _basename(__filename);
-const env = _env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.json")[env];
+import { fileURLToPath, pathToFileURL } from "url";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || "development";
+const config = require("../config/config.cjs")[env];
 const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
-  sequelize = new Sequelize(_env[config.use_env_variable], config);
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
   sequelize = new Sequelize(
     config.database,
@@ -21,25 +24,27 @@ if (config.use_env_variable) {
   );
 }
 
-readdirSync(__dirname)
-  .filter((file) => {
-    return (
-      file.indexOf(".") !== 0 &&
-      file !== basename &&
-      file.slice(-3) === ".js" &&
-      file.indexOf(".test.js") === -1
-    );
-  })
-  .forEach((file) => {
-    const model = require(join(__dirname, file))(sequelize, DataTypes);
-    db[model.name] = model;
-  });
+const files = readdirSync(__dirname).filter((file) => {
+  return (
+    file.indexOf(".") !== 0 &&
+    file !== basename &&
+    file.endsWith(".js") &&
+    !file.endsWith(".test.js")
+  );
+});
 
-Object.keys(db).forEach((modelName) => {
+for (const file of files) {
+  const modulePath = pathToFileURL(path.join(__dirname, file)).href;
+  const module = await import(modulePath);
+  const model = module.default(sequelize, DataTypes);
+  db[model.name] = model;
+}
+
+for (const modelName of Object.keys(db)) {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
-});
+}
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

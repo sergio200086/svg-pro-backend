@@ -1,10 +1,10 @@
 "use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
+import { Model } from "sequelize";
+export default (sequelize, DataTypes) => {
   class Icons extends Model {
     static associate(models) {
-      Icons.belongsTo(models.Category, { foreignKey: "categoryId" });
-      Icons.belongsToMany(models.Tag, {
+      Icons.belongsTo(models.Categories, { foreignKey: "categoryId" });
+      Icons.belongsToMany(models.Tags, {
         through: models.IconsTag,
         foreignKey: "iconId",
       });
@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Icons",
+      timestamps: false,
     }
   );
   return Icons;

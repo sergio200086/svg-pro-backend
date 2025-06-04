@@ -3,10 +3,23 @@ import cors from "@fastify/cors";
 
 const fastify = Fastify({
   logger: true,
+  ajv: {
+    customOptions: {
+      coerceTypes: false,
+    },
+  },
 });
 
 await fastify.register(cors, {
   methods: ["GET", "POST", "PUT", "DELETE"],
+});
+
+fastify.register(import("../routes/icons.js"), {
+  prefix: "/icons",
+});
+
+fastify.register(import("../routes/categories.js"), {
+  prefix: "/categories",
 });
 
 // Example route
