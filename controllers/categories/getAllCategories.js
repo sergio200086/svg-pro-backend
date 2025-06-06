@@ -1,4 +1,4 @@
-import model from "../models/index.js";
+import model from "../../models/index.js";
 const { Categories } = model;
 
 export default async function getAllCategories(req, res) {

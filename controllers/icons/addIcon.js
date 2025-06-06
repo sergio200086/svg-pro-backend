@@ -1,5 +1,4 @@
-import { create } from "domain";
-import models from "../models/index.js";
+import models from "../../models/index.js";
 const { Icons } = models;
 
 export default async function addIcon(req, res) {

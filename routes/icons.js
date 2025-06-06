@@ -1,7 +1,7 @@
-import getAllIcons from "../controllers/getAllIcons.js";
-import addIcon from "../controllers/addIcon.js";
+import getAllIcons from "../controllers/icons/getAllIcons.js";
+import addIcon from "../controllers/icons/addIcon.js";
+import deleteIcon from "../controllers/icons/deleteIcon.js";
 import addIconOptions from "./options/addIconOptions.js";
-import deleteIcon from "../controllers/deleteIcon.js";
 
 export default async function (fastify, options) {
   fastify.get("/all-icons", getAllIcons);

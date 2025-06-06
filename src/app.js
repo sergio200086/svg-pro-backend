@@ -22,6 +22,10 @@ fastify.register(import("../routes/categories.js"), {
   prefix: "/categories",
 });
 
+fastify.register(import("../routes/tags.js"), {
+  prefix: "/tags",
+});
+
 // Example route
 fastify.get("/", async function handler(request, reply) {
   return { hello: "world" };
