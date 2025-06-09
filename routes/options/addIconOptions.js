@@ -5,10 +5,10 @@ export default {
       type: "object",
       properties: {
         name: { type: "string" },
-        categoryId: { type: "integer" },
+        tags: { type: "array", items: { type: "string" } },
         svgText: { type: "string" },
       },
-      required: ["name", "categoryId", "svgText"],
+      required: ["name", "tags", "svgText"],
     },
   },
 };

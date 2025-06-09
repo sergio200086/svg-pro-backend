@@ -1,27 +1,20 @@
-"use strict";
-import { Model } from "sequelize";
-export default (sequelize, DataTypes) => {
-  class Icons extends Model {
-    static associate(models) {
-      Icons.belongsTo(models.Categories, { foreignKey: "categoryId" });
-      Icons.belongsToMany(models.Tags, {
-        through: models.IconsTag,
-        foreignKey: "iconId",
-      });
-    }
+import mongoose from "mongoose";
+import { Schema } from "mongoose";
+
+let IconSchema = new Schema(
+  {
+    _id: Schema.Types.ObjectId,
+    name: { type: String, required: true },
+    tags: { type: [String], required: true },
+    svgText: { type: String, required: true },
+    createdTime: { type: Date, default: Date.now },
+  },
+  {
+    collection: "icon",
   }
-  Icons.init(
-    {
-      name: DataTypes.STRING,
-      categoryId: DataTypes.INTEGER,
-      svgText: DataTypes.STRING,
-      createdTime: DataTypes.DATE,
-    },
-    {
-      sequelize,
-      modelName: "Icons",
-      timestamps: false,
-    }
-  );
-  return Icons;
+);
+
+export default {
+  Icon: mongoose.model("Icon", IconSchema),
+  IconSchema: IconSchema,
 };

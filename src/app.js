@@ -1,5 +1,9 @@
+import dotenv from "dotenv";
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import mongoose from "mongoose";
+
+dotenv.config();
 
 const fastify = Fastify({
   logger: true,
@@ -18,18 +22,17 @@ fastify.register(import("../routes/icons.js"), {
   prefix: "/icons",
 });
 
-fastify.register(import("../routes/categories.js"), {
-  prefix: "/categories",
-});
-
-fastify.register(import("../routes/tags.js"), {
-  prefix: "/tags",
-});
-
 // Example route
 fastify.get("/", async function handler(request, reply) {
   return { hello: "world" };
 });
+
+mongoose
+  .connect(process.env.CONEXION_MONGODB, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
+  .then(() => console.log("✅ Conectado a la base de datos :D"));
 
 // Start server
 const start = async () => {
